@@ -76,7 +76,7 @@ if (presentDate === '2020-01-01') {
     });
 }
 
-// // if no Documents in DB, get and post Data
+// if no Documents in DB, get and post Data
 Album.find({}, function(err, result) {
     if (err) throw err;
     if (!result.length) {
