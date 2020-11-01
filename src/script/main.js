@@ -70,7 +70,6 @@ async function getAlbums(targetYearsAgo) {
 if (presentDate === '2020-01-01') {
     Album.deleteMany({}, function(err, result) {
         if (err) throw err;
-
         console.log('delete documents');
     });
 }
@@ -84,15 +83,16 @@ Album.find({}, function(err, result) {
         getAlbums(40);
         getAlbums(50);
     }
-}).then(() => {
-    // not run on 1/1 becasue of the incomplete data.
-    if (presentDate !== '2020-01-01') {
-        Album.find({ release_date: '1980-01-11'}, function(err, result) {
-            if (err) throw err;
-            result.forEach((album) => {
-                Bot.tweet(album);
-            })
-        })
-    }
+    console.log('hey')
 });
 
+// not run on 1/1 becasue of the incomplete data.
+if (presentDate !== '2020-01-01') {
+    Album.find({ release_date: presentDate}, function(err, result) {
+        if (err) throw err;
+        result.forEach((album) => {
+            console.log(result.length);
+            Bot.tweet(album);
+        })
+    })
+}

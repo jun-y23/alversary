@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-mongoose.connect('mongodb://127.0.0.1:27017/alversary', { 
+mongoose.connect('mongodb://mongodb:27017', { 
     useCreateIndex: true,
     useUnifiedTopology: true,
-});
+    useNewUrlParser: true,
+    dbName: "alversary"
+})
+.then(() => console.log('success!'))
+.catch(() => console.log('error'))
+;
 
 const albumSchema = new Schema({
     name: {
