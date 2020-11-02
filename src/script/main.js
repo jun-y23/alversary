@@ -71,7 +71,6 @@ async function getAlbums(targetYearsAgo) {
 if (presentDate === '2020-01-01') {
     Album.deleteMany({}, function(err, result) {
         if (err) throw err;
-
         console.log('delete documents');
     });
 }

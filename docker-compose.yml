@@ -1,0 +1,43 @@
+# docker-compose記法のバージョン
+version: '3.3'
+
+services:
+  node:
+    build: .
+    ports:
+      - "8080:3000"
+    hostname: node
+    # このコンテナは、以下記述する「mongo-db」コンテナが立ち上がってから作成される。
+    depends_on:
+      - mongodb
+  
+        # 以下mongoDBのコンテナ設定。コンテナ名は「mongo-db」とつく。
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - "27018:27017"
+    hostname: mongodb
+    environment:
+      -  'MONGODB_USER=user' 
+      -  'MONGODB_PASS=password!'
+    volumes:
+      - 'mongodb-data:/data/db'
+
+  mongo-express:
+    container_name: mongo-express
+    links:
+      - 'mongodb:mongo'
+    ports:
+      - '8081:8081'
+    environment:
+      - 'ME_CONFIG_OPTIONS_EDITORTHEME=ambiance'
+      - 'ME_CONFIG_BASICAUTH_USERNAME=user'
+      - 'ME_CONFIG_BASICAUTH_PASSWORD=password!'
+    image: mongo-express
+
+  mongo-data:
+    image: busybox
+
+volumes: 
+  mongodb-data:
