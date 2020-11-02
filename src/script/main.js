@@ -1,7 +1,8 @@
 const axios = require("axios");
 const querystring = require("querystring");
 require("dotenv").config();
-const model = require('../db/mongoose');
+require('../db/mongoose');
+const model = require('../models/album');
 const Album = model.Album;
 const Bot = require('./bot');
 
@@ -13,11 +14,17 @@ ENDPOINT = "https://api.spotify.com/v1/search";
 
 let day = new Date();
 let presentYear = day.getFullYear();
+
 let presentDate = [
     day.getFullYear(),
     ('0' + (day.getMonth() + 1)).slice(-2),
     ('0' + day.getDate()).slice(-2)
   ].join('-');
+
+let queryDate = [
+    ('0' + (day.getMonth() + 1)).slice(-2),
+    ('0' + day.getDate()).slice(-2)
+].join('-')
 
 /**
  * 
@@ -52,13 +59,14 @@ async function getAlbums(targetYearsAgo) {
                 }
             })
             // write to DB
-            albumsToSave.forEach(album => {
+            albumsToSave.forEach( async (album) => {
                 let albumInfo = new Album(album);
-                albumInfo.save().then((response) => {
-                    console.log(response)
-                }).catch((e) => {
-                    console.log(e)
-                });
+                try {
+                    await albumInfo.save();
+                    console.log(response);
+                } catch (e) {
+                    console.log(e);
+                }
             });
         }
     } catch (err) {
@@ -83,16 +91,15 @@ Album.find({}, function(err, result) {
         getAlbums(40);
         getAlbums(50);
     }
-    console.log('hey')
-});
-
-// not run on 1/1 becasue of the incomplete data.
-if (presentDate !== '2020-01-01') {
-    Album.find({ release_date: presentDate}, function(err, result) {
-        if (err) throw err;
-        result.forEach((album) => {
-            console.log(result.length);
-            Bot.tweet(album);
+}).then(() => {
+    // not run on 1/1 becasue of the incomplete data.
+    if (presentDate !== '2020-01-01') {
+        const $regex = queryDate;
+        Album.find({ release_date: { $regex }}, function(err, result) {
+            if (err) throw err;
+            result.forEach((album) => {
+                Bot.tweet(album);
+            })
         })
-    })
-}
+    }
+});
