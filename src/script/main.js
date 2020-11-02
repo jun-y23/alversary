@@ -41,7 +41,7 @@ async function getAlbums(targetYearsAgo) {
                 },
             })
             albumHasReleaseDate = albumRes.data.albums.items.filter((item) => {            
-                return item.release_date_precision === 'day';
+                return item.release_date_precision === 'day' && !item.release_date.includes('-01-01');
             });
             albumsToSave = albumHasReleaseDate.map((album) => {
                 return {
@@ -51,6 +51,7 @@ async function getAlbums(targetYearsAgo) {
                     'uri': album.external_urls.spotify,
                 }
             })
+            console.log(albumsToSave);
             // write to DB
             albumsToSave.forEach(album => {
                 let albumInfo = new Album(album);
@@ -83,16 +84,11 @@ Album.find({}, function(err, result) {
         getAlbums(40);
         getAlbums(50);
     }
-    console.log('hey')
-});
-
-// not run on 1/1 becasue of the incomplete data.
-if (presentDate !== '2020-01-01') {
-    Album.find({ release_date: presentDate}, function(err, result) {
+}).then(() => {
+    Album.find({ release_date: '1980-01-11'}, function(err, result) {
         if (err) throw err;
         result.forEach((album) => {
-            console.log(result.length);
             Bot.tweet(album);
         })
     })
-}
+});
