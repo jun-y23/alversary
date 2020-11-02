@@ -48,7 +48,7 @@ async function getAlbums(targetYearsAgo) {
                 },
             })
             albumHasReleaseDate = albumRes.data.albums.items.filter((item) => {            
-                return item.release_date_precision === 'day';
+                return item.release_date_precision === 'day' && !item.release_date.includes('-01-01');
             });
             albumsToSave = albumHasReleaseDate.map((album) => {
                 return {
@@ -58,6 +58,7 @@ async function getAlbums(targetYearsAgo) {
                     'uri': album.external_urls.spotify,
                 }
             })
+            console.log(albumsToSave);
             // write to DB
             albumsToSave.forEach( async (album) => {
                 let albumInfo = new Album(album);
@@ -92,14 +93,12 @@ Album.find({}, function(err, result) {
         getAlbums(50);
     }
 }).then(() => {
-    // not run on 1/1 becasue of the incomplete data.
-    if (presentDate !== '2020-01-01') {
-        const $regex = queryDate;
-        Album.find({ release_date: { $regex }}, function(err, result) {
-            if (err) throw err;
-            result.forEach((album) => {
-                Bot.tweet(album);
-            })
+    // not run on 1/1 becasue of the incomplete data. but there is no code of that because never save albums released on 1/1
+    const $regex = queryDate;
+    Album.find({ release_date: { $regex }}, function(err, result) {
+        if (err) throw err;
+        result.forEach((album) => {
+            Bot.tweet(album);
         })
-    }
+    })
 });
