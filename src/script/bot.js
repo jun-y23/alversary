@@ -15,8 +15,8 @@ let presentYear = day.getFullYear();
  * @param {*} albumInfo
  */
 module.exports.tweet = function(albumInfo) {
-    birth = albumInfo.release_date.slice(0,4);
-    anniversaryYear = presentYear - birth;
+    releasedYear = albumInfo.release_date.slice(0,4);
+    anniversaryYear = presentYear - releasedYear;
     content = `Happy ${anniversaryYear}th Birthday, ${albumInfo.name} by ${albumInfo.artist} !! ${albumInfo.uri}`
     client.post('statuses/update', {status: content}, function(error, tweet, response) {
         if (!error) {
