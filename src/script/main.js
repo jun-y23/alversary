@@ -99,5 +99,6 @@ if (presentDate !== '2020-01-01') {
         } catch (err) {
             console.log(err);
         }
+        // TODO: close DB
     });
 }

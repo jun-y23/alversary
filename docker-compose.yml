@@ -7,6 +7,7 @@ services:
     ports:
       - "8080:3000"
     hostname: node
+    env_file: .env
     # このコンテナは、以下記述する「mongo-db」コンテナが立ち上がってから作成される。
     depends_on:
       - mongodb
