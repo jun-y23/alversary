@@ -10,8 +10,7 @@
     "twitter": "^1.7.1"
   },
   "scripts": {
-    "dev": "nodemon",
-    "start": "node index.js"
+    "dev": "nodemon"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"

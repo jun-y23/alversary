@@ -83,6 +83,8 @@ if (presentDate !== '2020-01-01') {
         if (err) throw err;
         if (!result.length) {
             console.log('no documents and get and save data');
+            getAlbums(10);
+            getAlbums(20);
             getAlbums(30);
             getAlbums(40);
             getAlbums(50);

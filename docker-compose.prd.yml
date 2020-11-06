@@ -1,0 +1,9 @@
+version: '3.3'
+
+services:
+  node:
+    build: .
+    ports:
+      - "8080:3000"
+    hostname: node
+    env_file: .env
