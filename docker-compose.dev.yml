@@ -1,4 +1,3 @@
-# docker-compose記法のバージョン
 version: '3.3'
 
 services:
@@ -8,11 +7,9 @@ services:
       - "8080:3000"
     hostname: node
     env_file: .env
-    # このコンテナは、以下記述する「mongo-db」コンテナが立ち上がってから作成される。
     depends_on:
       - mongodb
   
-        # 以下mongoDBのコンテナ設定。コンテナ名は「mongo-db」とつく。
   mongodb:
     image: mongo
     restart: always
