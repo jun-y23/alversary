@@ -45,8 +45,8 @@ async function getAlbums(targetYearsAgo) {
                     offset: offset,
                 },
             })
-            albumsHasReleaseDate = albumRes.data.albums.items.filter((item) => item.release_date_precision === 'day' && !item.release_date.includes('-01-01'))
-            albumsToSave = albumsHasReleaseDate.map((album) => {
+            albumsHaveReleaseDate = albumRes.data.albums.items.filter((item) => item.release_date_precision === 'day' && !item.release_date.includes('-01-01'))
+            albumsToSave = albumsHaveReleaseDate.map((album) => {
                 return {
                     'name': album.name,
                     'artist': album.artists[0].name,
