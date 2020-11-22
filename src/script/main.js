@@ -32,7 +32,7 @@ let queryDate = presentDate.slice(4);
  */
 async function getAlbums(targetYearsAgo) {
     try {
-        // 毎回取得する必要ない？
+        // 毎回取得する必要ない？この関数外で取得しといた方がいいかも
         const res = await axios.post(TOKEN_URL, GRANT_TYPE, HEADERS);
         const ACCESS_TOKEN = res.data.access_token;
         for (let offset = 50; offset < 2001; offset+=50) {
