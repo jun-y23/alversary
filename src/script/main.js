@@ -29,6 +29,7 @@ let queryDate = presentDate.slice(4);
  * 
  * @param {*} targetYearsAgo
  * 基本１年に１回しか実行されない
+ * getというかpostか
  */
 async function getAlbums(targetYearsAgo) {
     try {
